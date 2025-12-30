@@ -465,21 +465,27 @@ function testNotification() {
   }
 
   if (Notification.permission === "granted") {
-    new Notification("🎉 Test Notification", {
-      body: "Notifications are working!",
-      vibrate: [200, 100, 200],
-    });
-    showToast("✅ Notification sent!");
+    showToast("⏳ Notification coming in 3 seconds...");
+    setTimeout(() => {
+      new Notification("🎉 Test Notification", {
+        body: "Notifications are working!",
+        vibrate: [200, 100, 200],
+      });
+      showToast("✅ Notification sent!");
+    }, 3000); 
   } else if (Notification.permission === "denied") {
     showToast("❌ Notification permission denied");
   } else {
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {
-        new Notification("🎉 Test Notification", {
-          body: "Notifications are working!",
-          vibrate: [200, 100, 200],
-        });
-        showToast("✅ Notification sent!");
+        showToast("⏳ Notification coming in 3 seconds...");
+        setTimeout(() => {
+          new Notification("🎉 Test Notification", {
+            body: "Notifications are working!",
+            vibrate: [200, 100, 200],
+          });
+          showToast("✅ Notification sent!");
+        }, 3000); 
       } else {
         showToast("❌ Notification permission denied");
       }
