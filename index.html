@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Japan New Year Countdown</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        overflow: hidden;
+      }
+
+      /* Animated background particles */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .particle {
+        position: absolute;
+        font-size: 1em;
+        /* visibility: hidden; */
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 15s infinite;
+      }
+
+      .particle:nth-child(1) {
+        left: 10%;
+        animation-delay: 0s;
+        font-size: 20em;
+      }
+      .particle:nth-child(2) {
+        left: 20%;
+        animation-delay: 2s;
+        font-size: 20em;
+      }
+      .particle:nth-child(3) {
+        left: 30%;
+        animation-delay: 4s;
+        font-size: 20em;
+
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(100vh) scale(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100vh) scale(1);
+          opacity: 0;
+        }
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        padding: 40px 50px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 100%;
+      }
+
+      .flag {
+        font-size: 4em;
+        margin-bottom: 10px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      h1 {
+        font-size: 1.8em;
+        font-weight: 700;
+        margin-bottom: 30px;
+        background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .time-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 30px;
+      }
+
+      .time {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 1em;
+        color: rgba(255, 255, 255, 0.8);
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+      }
+
+      .time-icon {
+        font-size: 1.2em;
+      }
+
+      .countdown-container {
+        margin-top: 20px;
+      }
+
+      .countdown-label {
+        font-size: 0.9em;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 15px;
+      }
+
+      .countdown {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .countdown-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 15px 20px;
+        border-radius: 16px;
+        min-width: 70px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      }
+
+      .countdown-value {
+        font-size: 2em;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .countdown-unit {
+        font-size: 0.7em;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 5px;
+      }
+
+      .celebration {
+        font-size: 2em;
+        font-weight: 700;
+        background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff6b6b);
+        background-size: 300% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 2s linear infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .toast {
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px 40px;
+        border-radius: 16px;
+        font-size: 1.2em;
+        font-weight: 500;
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        z-index: 1000;
+        animation: slideDown 0.5s ease;
+      }
+
+      @keyframes slideDown {
+        from {
+          top: -100px;
+          opacity: 0;
+        }
+        to {
+          top: 30px;
+          opacity: 1;
+        }
+      }
+
+      .footer {
+        margin-top: 30px;
+        font-size: 0.8em;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 30px 20px;
+        }
+
+        h1 {
+          font-size: 1.4em;
+        }
+
+        .countdown-item {
+          min-width: 60px;
+          padding: 12px 15px;
+        }
+
+        .countdown-value {
+          font-size: 1.6em;
+        }
+      }
+
+      .test-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.test-btn {
+  padding: 12px 24px;
+  font-size: 0.9em;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+}
+
+.test-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.test-btn:active {
+  transform: translateY(0);
+}
+    </style>
+  </head>
+  <body>
+    <!-- Floating particles background -->
+    <div class="particles">
+      <div class="particle">🥳</div>
+      <div class="particle">💖</div>
+      <div class="particle">🌟</div>
+    </div>
+
+    <div class="container">
+      <div class="flag">🇯🇵</div>
+      <h1>New Year Countdown</h1>
+
+      <div class="time-container">
+        <div class="time">
+          <span id="jpTime">Japan Time: Loading...</span>
+        </div>
+        <div class="time">
+          <span id="myTime">Malaysia Time: Loading...</span>
+        </div>
+      </div>
+
+      <div class="countdown-container">
+        <div class="countdown-label">Time until 2026 for Japan</div>
+        <div class="countdown" id="countdown"></div>
+      </div>
+
+
+        <!-- Test buttons -->
+  <div class="test-buttons">
+    <button class="test-btn" onclick="testToast()">🔔 Test Toast</button>
+    <button class="test-btn" onclick="testNotification()">📱 Test Notification</button>
+  </div>
+</div>
+
+    </div>
+
+    <script>
+      // Request notification permission on page load
+      if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.animation = "slideDown 0.5s ease reverse";
+          setTimeout(() => toast.remove(), 500);
+        }, 5000);
+      }
+
+      let notificationShown = false;
+
+      function update() {
+        const now = new Date();
+
+        const jpNow = new Date(
+          now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
+        );
+        const myNow = new Date(
+          now.toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" })
+        );
+
+        document.getElementById("jpTime").textContent =
+          "Japan: " +
+          jpNow.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+          });
+
+        document.getElementById("myTime").textContent =
+          "Malaysia: " +
+          myNow.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+          });
+
+        const newYearJP = new Date("2026-01-01T00:00:00+09:00");
+        const diff = newYearJP - jpNow;
+
+        if (diff <= 0) {
+          document.getElementById("countdown").innerHTML =
+            '<span class="celebration">🎉 HAPPY NEW YEAR 2026 🎉</span>';
+
+          // Show toast and notification only once
+          if (!notificationShown) {
+            showToast("🎉 HAPPY NEW YEAR 2026! 🎉");
+
+            // Send notification if permission granted
+            if (
+              "Notification" in window &&
+              Notification.permission === "granted"
+            ) {
+              new Notification("🎉 HAPPY NEW YEAR 2026! 🎉", {
+                body: "Happy New Year from Japan!",
+                vibrate: [200, 100, 200],
+              });
+            }
+
+            notificationShown = true;
+          }
+        } else {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+          document.getElementById("countdown").innerHTML = `
+            <div class="countdown-item">
+              <span class="countdown-value">${days}</span>
+              <span class="countdown-unit">Days</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-value">${hours
+                .toString()
+                .padStart(2, "0")}</span>
+              <span class="countdown-unit">Hours</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-value">${minutes
+                .toString()
+                .padStart(2, "0")}</span>
+              <span class="countdown-unit">Mins</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-value">${seconds
+                .toString()
+                .padStart(2, "0")}</span>
+              <span class="countdown-unit">Secs</span>
+            </div>
+          `;
+        }
+      }
+
+      update();
+      setInterval(update, 1000);
+
+      //test Toast and notification functions
+      function testToast() {
+  showToast("🎉 Toast is working! 🎉");
+}
+
+function testNotification() {
+  if (!("Notification" in window)) {
+    showToast("❌ Notifications not supported on this browser");
+    return;
+  }
+
+  if (Notification.permission === "granted") {
+    new Notification("🎉 Test Notification", {
+      body: "Notifications are working!",
+      vibrate: [200, 100, 200],
+    });
+    showToast("✅ Notification sent!");
+  } else if (Notification.permission === "denied") {
+    showToast("❌ Notification permission denied");
+  } else {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        new Notification("🎉 Test Notification", {
+          body: "Notifications are working!",
+          vibrate: [200, 100, 200],
+        });
+        showToast("✅ Notification sent!");
+      } else {
+        showToast("❌ Notification permission denied");
+      }
+    });
+  }
+}
+
+    </script>
+  </body>
+</html>
