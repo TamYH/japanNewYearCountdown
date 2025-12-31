@@ -482,7 +482,7 @@ function testNotification() {
         setTimeout(() => {
           new Notification("🎉 Test Notification", {
             body: "Notifications are working!",
-            vibrate: [200, 100, 200],
+            vibrate: [500, 100, 500, 100, 500],
           });
           showToast("✅ Notification sent!");
         }, 3000); 
